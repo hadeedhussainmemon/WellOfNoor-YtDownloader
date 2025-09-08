@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>WellofNoor — Fast YouTube Downloader</title>
+  <meta name="description" content="Download WellofNoor (Windows) — fast, safe YouTube downloader." />
+  <style>
+    :root{--accent:#0b84ff;--bg:#0f1720;--card:#111827;--muted:#9aa4b2}
+    *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;background:linear-gradient(180deg,#071029 0%,#0b1220 100%);color:#e6eef6;line-height:1.5}
+    .container{max-width:980px;margin:48px auto;padding:24px}
+    header{display:flex;align-items:center;gap:16px}
+    .logo{width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#6ee7b7);display:flex;align-items:center;justify-content:center;font-weight:700;color:#04263a}
+    h1{margin:0;font-size:28px}
+    p.lead{color:var(--muted);margin:6px 0 20px}
+    .hero{display:flex;gap:28px;align-items:center}
+    .card{background:rgba(255,255,255,0.03);padding:20px;border-radius:12px;box-shadow:0 6px 20px rgba(2,6,23,0.6)}
+    .columns{display:grid;grid-template-columns:1fr 340px;gap:24px}
+    .features{display:grid;gap:12px}
+    .feature{display:flex;gap:12px;align-items:flex-start}
+    .feature strong{display:block}
+    .download-box{text-align:center}
+    .download-btn{display:inline-block;padding:12px 18px;border-radius:10px;background:var(--accent);color:#04263a;font-weight:700;text-decoration:none}
+    .small{font-size:13px;color:var(--muted)}
+    footer{margin-top:28px;color:var(--muted);font-size:13px}
+    @media (max-width:900px){.columns{grid-template-columns:1fr} .hero{flex-direction:column-reverse}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">WN</div>
+      <div>
+        <h1>WellofNoor — Fast YouTube Downloader</h1>
+        <p class="lead">Small, fast Windows app to download YouTube videos for offline viewing.</p>
+      </div>
+    </header>
+
+    <main class="card columns" role="main">
+      <section>
+        <h2>About WellofNoor</h2>
+        <p class="small">WellofNoor is a lightweight Windows application (single EXE). Click the download button to get the latest installer.</p>
+
+        <div class="features" style="margin-top:14px">
+          <div class="feature"><div style="font-size:18px">⚡</div><div><strong>Fast & light</strong><span class="small">Small installer, minimal RAM usage.</span></div></div>
+          <div class="feature"><div style="font-size:18px">🔒</div><div><strong>Safe to run</strong><span class="small">Sign your binaries and host on trusted CDN for best UX.</span></div></div>
+          <div class="feature"><div style="font-size:18px">⬇️</div><div><strong>Direct downloads</strong><span class="small">One-click download — supports resume on many clients.</span></div></div>
+        </div>
+
+        <h3 style="margin-top:18px">Changelog</h3>
+        <ul class="small">
+          <li>v1.0 — Initial public release</li>
+        </ul>
+
+        <p class="small" style="margin-top:18px">Notes: Windows SmartScreen / Defender may warn for unsigned executables. Consider code-signing and publishing to GitHub Releases for better trust.</p>
+      </section>
+
+      <aside class="download-box">
+        <div style="margin-bottom:12px"><strong>Download</strong></div>
+        <!--
+          HOW TO USE:
+          - Replace DOWNLOAD_URL below with the direct URL to your .exe file.
+          - If you put the exe in the same repo/site, use: ./assets/YourApp-setup.exe
+          - Recommended: upload the .exe to GitHub Releases (attach as asset) or to an S3 bucket and paste the public URL here.
+        -->
+        <a id="downloadBtn" class="download-btn" href="assets/YourApp-setup.exe" download>Download for Windows</a>
+        <div class="small" style="margin-top:10px">Installer size: <span id="size">—</span></div>
+        <div class="small" style="margin-top:8px">Also available on: <a id="releasesLink" class="small" href="#">GitHub Releases</a></div>
+      </aside>
+    </main>
+
+    <footer>
+      <div>By <strong>Hadeed Hussain</strong> — <span class="small">Use responsibly. This tool is intended for personal backups and lawful use.</span></div>
+    </footer>
+  </div>
+
+  <script>
+    // Simple script to attempt to fetch HEAD for file size (works if CORS allowed)
+    (function(){
+      const dl = document.getElementById('downloadBtn');
+      const sizeEl = document.getElementById('size');
+      const releasesLink = document.getElementById('releasesLink');
+      const defaultUrl = dl.getAttribute('href');
+      releasesLink.href = '#';
+
+      async function updateSize(url){
+        try{
+          const res = await fetch(url, {method:'HEAD'});
+          const len = res.headers.get('content-length');
+          if(len) sizeEl.textContent = (Math.round((parseInt(len)/1024/1024)*10)/10) + ' MB';
+          else sizeEl.textContent = 'unknown';
+        }catch(e){ sizeEl.textContent = 'unknown'; }
+      }
+
+      // attempt update
+      updateSize(defaultUrl);
+
+      // If you want to change to GitHub Releases URL, replace here programmatically:
+      // dl.href = 'https://github.com/yourname/yourrepo/releases/download/v1.0/YourApp-setup.exe';
+      // releasesLink.href = 'https://github.com/yourname/yourrepo/releases';
+
+    })();
+  </script>
+</body>
+</html>
